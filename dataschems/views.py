@@ -6,6 +6,7 @@ from django.urls import reverse_lazy
 from django.utils.decorators import method_decorator
 from django.views.generic import ListView, CreateView
 
+from dataschems.forms import ModelSchemaForm
 from dataschems.models import ModelSchema
 
 
@@ -26,7 +27,7 @@ def schema_views(request):
 class ModelSchemaCreateView(CreateView):
     model = ModelSchema
     template_name = 'schema_create.html'
-    # form_class = ProductAdminCreationForm
+    form_class = ModelSchemaForm
     success_url = reverse_lazy('users:profile')
 
     def get_context_data(self, **kwargs):
@@ -37,7 +38,6 @@ class ModelSchemaCreateView(CreateView):
     @method_decorator(user_passes_test(lambda u: u.is_superuser))
     def dispatch(self, request, *args, **kwargs):
         return super().dispatch(request, *args, **kwargs)
-
 
 
 @login_required()
