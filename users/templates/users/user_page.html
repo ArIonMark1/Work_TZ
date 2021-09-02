@@ -1,0 +1,89 @@
+{% extends 'users/base.html' %}
+{% load static %}
+
+{% block content %}
+
+    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+        <div class="container-fluid">
+            <a class="navbar-brand" href="#">FakeCSV</a>
+            {#            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"#}
+            {#                    aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">#}
+            {#                <span class="navbar-toggler-icon"></span>#}
+            {#            </button>#}
+            <div class="collapse navbar-collapse" id="navbarNav">
+
+                <ul class="navbar-nav">
+
+                    <li class="nav-item">
+                        <a class="nav-link" href="#">Schemas</a>
+                    </li>
+
+
+                    {% if user.is_authenticated %}
+                        <li class="nav-item">
+                            <a class="nav-link" href="#">Hello, <strong>{{ user.username|title }}</strong></a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="btn btn-outline-primary" href="{% url 'users:logout' %}">LogOut</a>
+                        </li>
+                    {% else %}
+                        <li class="nav-item">
+                            <a class="btn btn-outline-primary" href="{% url 'users:login' %}">LogIn</a>
+                        </li>
+                    {% endif %}
+
+                </ul>
+            </div>
+        </div>
+    </nav>
+    <main>
+        {#        <div class="user-info">#}
+        {#            {% for form in user_form %}#}
+        {#                <p>{{ form }}</p>#}
+        {#            {% endfor %}#}
+        {#        </div>#}
+
+        <div class="container mx-auto">
+            <div class="row">
+                <div class="col-sm-12 col-md-12 col-lg-4 pt-4 pb-4">
+                    <div class="card p-4  container mt-4">
+
+                        <h4 class="card-title font-weight-bold text-center">Hello, {{ user.username|title }}</h4>
+                        <hr>
+                        <div class="card-text">
+                            <p class="text-muted mb-0" style="font-size: 12px">Username:</p>
+                            <p>{{ user.username }}</p>
+                            <p class="text-muted mb-0" style="font-size: 12px">Name:</p>
+                            <p>{{ user.first_name }} {{ user.last_name }}</p>
+                            <p class="text-muted mb-0" style="font-size: 12px">Email:</p>
+                            <p>{{ user.email }} </p>
+                        </div>
+
+                    </div>
+                </div>
+                <div class="col-sm-12 col-md-12 col-lg-9 pb-4">
+
+                    <div class="row">
+
+                        <div class="row my-auto d-flex justify-content-between">
+
+                            <h2 class="font-weight-bold pt-2 col-md-4">Data schemas</h2>
+
+                            <a class="btn btn-success h3 col-md-2 offset-md-2"
+                               href="{% url 'schemes:schema_add' %}">New Schema</a>
+                        </div>
+
+
+                    </div>
+
+
+                    {% include 'schemas_tables.html' %}
+
+                    <br>
+
+                </div>
+            </div>
+        </div>
+    </main>
+
+{% endblock %}

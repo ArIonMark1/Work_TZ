@@ -1,0 +1,31 @@
+{% extends 'users/base.html' %}
+{% load static %}
+
+
+{% block content %}
+
+    <div class="container mt-4" style="border: 1px grey solid; border-radius: 5px; padding: 5%; width:40%">
+        <div class="row">
+            <div class="col-sm-8 mx-auto">
+                <h1 style="text-align: center">Login</h1>
+
+                <form class="mt-4 text-end" action="{% url 'users:login' %}" method="post">
+                    {% csrf_token %}
+
+                    <div class="mb-3">
+                        <label for="{{ form.username.id_for_label }}"></label>
+                        {{ form.username }}
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="{{ form.password.id_for_label }}"></label>
+                        {{ form.password }}
+                    </div>
+                    <a class="btn btn-primary" href="{% url 'social:begin' 'google-oauth2' %}">Google</a>
+                    <button type="submit" class="btn btn-primary">Login</button>
+
+                </form>
+            </div>
+        </div>
+    </div>
+{% endblock %}
