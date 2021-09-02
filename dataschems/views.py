@@ -28,17 +28,20 @@ class ModelSchemaCreateView(CreateView):
     model = ModelSchema
     template_name = 'schema_create.html'
     form_class = ModelSchemaForm
-    success_url = reverse_lazy('users:profile')
+
+    # success_url = reverse_lazy('users:profile')
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context['title'] = 'Schemas registration'
         return context
 
-    @method_decorator(user_passes_test(lambda u: u.is_superuser))
-    def dispatch(self, request, *args, **kwargs):
-        return super().dispatch(request, *args, **kwargs)
+    # @method_decorator(user_passes_test(lambda u: u.is_superuser))
+    # def dispatch(self, request, *args, **kwargs):
+    #     return super().dispatch(request, *args, **kwargs)
 
+
+# ==============================================================================
 
 @login_required()
 def schema_remove(request, b_id):
