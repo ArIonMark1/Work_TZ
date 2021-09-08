@@ -3,12 +3,67 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-      <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.0/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-KyZXEAg3QhqLMpG8r+8fhAXLRk2vvoC2f3B09zVXn8CA5QIVfZOJ3BCsw2P0p/We" crossorigin="anonymous">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.0/dist/css/bootstrap.min.css" rel="stylesheet"
+          integrity="sha384-KyZXEAg3QhqLMpG8r+8fhAXLRk2vvoC2f3B09zVXn8CA5QIVfZOJ3BCsw2P0p/We" crossorigin="anonymous">
     <title>{{ title }}</title>
 </head>
 <body>
+<nav class="navbar navbar-expand-lg navbar-light bg-light">
+    <div class="container-fluid">
+
+        <ul class="navbar-nav">
+            <li>
+                <p class="navbar-brand">FakeCSV</p>
+            </li>
+            <li class="nav-item">
+                <p class="nav-link">Schemas</p>
+            </li>
+        </ul>
+
+        <div class="collapse navbar-collapse" id="navbarNav">
+
+            <ul class="navbar-nav offset-md-8">
+
+                {% if user.is_authenticated %}
+
+                    <li class="nav-item">
+                        <a class="nav-link" href="#">Hello, <strong>{{ user.username|title }}</strong></a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="btn btn-outline-primary" href="{% url 'users:logout' %}">LogOut</a>
+                    </li>
+
+                {% else %}
+
+                    <li class="nav-item">
+                        <a class="btn btn-outline-primary" href="{% url 'users:login' %}">LogIn</a>
+                    </li>
+
+                {% endif %}
+
+            </ul>
+        </div>
+    </div>
+</nav>
+
 
 {% block content %}
+    <div class="ml-4 col-sm-8 mt-5 col-lg-8 mx-auto">
+
+        <div class="row ">
+
+            <div class="row my-auto d-flex justify-content-between">
+
+                <h2 class="font-weight-bold pt-2 col-md-4">Data schemas</h2>
+
+                <a class="btn btn-success h3 col-md-2 offset-md-2"
+                   href="{% url 'schemes:schema_add' %}">New Schema</a>
+            </div>
+        </div>
+        <br>
+        {% include 'schemas_tables.html' %}
+    </div>
+
 {% endblock %}
 
 </body>

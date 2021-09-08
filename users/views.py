@@ -20,7 +20,7 @@ class UserLogin(LoginView):
 
 
 def user_profile(request):
-    return render(request=request, template_name='users/user_page.html',
+    return render(request=request, template_name='users/base.html',
                   context={'user': request.user, })
 
 

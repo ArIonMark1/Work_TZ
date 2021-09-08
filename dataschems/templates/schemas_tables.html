@@ -1,6 +1,7 @@
 <div>
 
-    <table class="table ">
+    <table class="table table-bordered">
+
         <thead>
         <tr>
             <th scope="col">#</th>
@@ -9,47 +10,42 @@
             <th scope="col">Actions</th>
         </tr>
         </thead>
-        {{ modelschema_list }}
-        {% for schema in modelschema_list %}
-            hello
-            {{ schema }}
-            {{ schema.pk }}
-            {{ schema.title }}
-            {{ schema.creator }}
-            <tr>
-                <th scope="row">{{ schema.id }}</th>
-                <td>{{ schema.title }}</td>
-                <td>{{ schema.time_to_create }}</td>
-                <td>
-                    <a class="btn btn-link" href="#">Edit</a>
-                    <a class="btn btn-danger" href="#">Delete</a>
-                </td>
-            </tr>
-        {% endfor %}
 
         <tbody>
-
         <tr>
             <th scope="row">1</th>
-            <td>Sit</td>
-            <td>Amet</td>
-            <td>Consectetur</td>
+            <td>
+                <a href="#" class="btn btn-link text-decoration-none">Sit</a>
+            </td>
+            <td>2020-03-16</td>
+            <td>
+                <a href="#" class="btn btn-link text-decoration-none">Edit scheme</a>
+                <a href="#" class="btn btn-link text-decoration-none text-danger">delete</a>
+            </td>
         </tr>
         <tr>
             <th scope="row">2</th>
-            <td>Adipisicing</td>
-            <td>Elit</td>
-            <td>Sint</td>
+            <td>
+                <a href="#" class="btn btn-link text-decoration-none">Adipisicing</a>
+            </td>
+            <td>2020-03-15</td>
+            <td>
+                <a href="#" class="btn btn-link text-decoration-none">Edit scheme</a>
+                <a href="#" class="btn btn-link text-decoration-none text-danger">delete</a>
+            </td>
         </tr>
         <tr>
             <th scope="row">3</th>
-            <td>Hic</td>
-            <td>Fugiat</td>
-            <td>Temporibus</td>
+            <td>
+                <a href="#" class="btn btn-link text-decoration-none">Hic</a>
+            </td>
+            <td>2020-03-14</td>
+            <td>
+                <a href="#" class="btn btn-link text-decoration-none">Edit scheme</a>
+                <a href="#" class="btn btn-link text-decoration-none text-danger">delete</a>
+            </td>
         </tr>
         </tbody>
-
     </table>
-
 
 </div>
