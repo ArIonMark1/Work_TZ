@@ -1,0 +1,58 @@
+{% extends 'users/base.html' %}
+
+{% block content %}
+
+    <div class="basket_list row" style="margin-bottom: 10px">
+
+        <table class="table">
+            <thead class="thead-dark">
+            <tr>
+                <th scope="col">id</th>
+                <th scope="col">creator</th>
+                <th scope="col">title</th>
+                <th scope="col">time to create</th>
+                <th scope="col">time to update</th>
+                <th scope="col">status</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr>
+                <th scope="row">{{ modelschema.pk }}</th>
+                <td>{{ modelschema.creator }}</td>
+                <td>{{ modelschema.title }}</td>
+                <td>
+                    {{ modelschema.time_to_create|date:"Y-m-d H:i:s" }}
+                </td>
+                <td>
+                    {{ modelschema.time_to_update|date:"Y-m-d H:i:s" }}
+                </td>
+                <td>
+                    {{ modelschema.status.title }}
+                </td>
+            </tr>
+            <tbody>
+        </table>
+        <table>
+            <h3>Schema columns</h3>
+            <thead>
+            <tr>
+                <th scope="col">id</th>
+                <th scope="col">title</th>
+                <th scope="col">time to create</th>
+                <th scope="col">time to update</th>
+                <th scope="col">status</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr>
+                <th>{{ modelschema.schemachilds.pk }}</th>
+                <th>{{ modelschema.schemachilds.name }}</th>
+                <th>{{ object }}</th>
+            </tr>
+            </tbody>
+
+        </table>
+    </div>
+
+
+{% endblock %}

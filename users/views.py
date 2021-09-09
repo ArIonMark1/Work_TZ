@@ -30,6 +30,5 @@ class UserProfileView(ListView):
         return context
 
 
-
 class LogOutUser(LogoutView):
     pass

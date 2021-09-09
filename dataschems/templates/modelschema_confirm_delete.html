@@ -1,0 +1,36 @@
+{% extends 'users/base.html' %}
+{% load static %}
+
+{% block content %}
+    <div class="category_delete">
+        <div class="h1">Уверены, что хотите удалить?</div>
+        <br>
+        {#        ===================================================================#}
+
+        <table class="table table-striped h4">
+            <tbody>
+            <tr>
+                <th scope="row">Schema Name</th>
+                <td>{{ object.title }}</td>
+            </tr>
+            <tr>
+                <th scope="row">Creator</th>
+                <td>{{ object.creator }}</td>
+            </tr>
+            </tbody>
+        </table>
+        <br>
+        {#======================================================#}
+        <div class="container">
+            <div class="row">
+                <form action="{% url 'schemes:delete' object.pk %}" method="post" class="col-sm-4">
+                    {% csrf_token %}
+                    <input class="btn btn-danger btn-lg col-3 w-100 p-3" type="submit" value="удалить">
+                </form>
+                <a class="btn btn-primary btn-lg col-sm-4 active w-4" role="button" href="{% url 'users:profile' %}">отмена</a>
+                {#                <button class="btn btn-success col-3 col-sm-2"></button>#}
+            </div>
+        </div>
+
+    </div>
+{% endblock %}

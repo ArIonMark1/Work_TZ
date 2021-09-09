@@ -1,6 +1,8 @@
 from django.db import models
 
 # Create your models here.
+from django.forms import formset_factory
+
 from users.models import BaseUser
 
 
@@ -29,13 +31,20 @@ class ModelSchema(models.Model):
     is_active = models.BooleanField(default=True, verbose_name="активен")
 
     class Meta:
-        ordering = ('-time_to_create',)
+        ordering = ('-time_to_update',)
         verbose_name = 'схема'
         verbose_name_plural = 'схемы'
 
-    def delete(self):
-        self.is_active = False
-        self.save()
+    def __str__(self):
+        return 'Текущая схема: {}'.format(self.id)
+
+    def get_total_quantity(self):
+        items = self.schemachilds.select_related()
+        return sum(list(map(lambda x: x.quantity, items)))
+
+    def get_product_type_quantity(self):
+        items = self.schemachilds.select_related()
+        return len(items)
 
     def __str__(self):
         return f'{self.title} ==> {self.creator.username}'
@@ -52,12 +61,14 @@ class Column(models.Model):
     INTEGERTYPE = 'INT'
     COMPANYNAME = 'CNM'
     JOBTYPE = 'JT'
+    PHONENUMBER = 'PN'
 
     DATA_TYPES = (
         (FULLNAME, 'Full name'),
         (INTEGERTYPE, 'Integer'),
         (COMPANYNAME, 'Company'),
         (JOBTYPE, 'Job'),
+        (PHONENUMBER, 'phone number'),
     )
 
     # type = models.ForeignKey(DataType, verbose_name='тип данных', on_delete=models.CASCADE, default='1')
@@ -74,3 +85,6 @@ class Column(models.Model):
 
     def __str__(self):
         return f'{self.model_schema.title} <== {self.name}'
+
+
+# ColumnFormSet = formset_factory(Column, extra=1)

@@ -1,56 +1,143 @@
 {% extends 'users/base.html' %}
-{% load static %}
-
 
 {% block content %}
 
     <div class="order_form">
-        <form action="{% url 'schemes:column_create' %}" method="post">
+
+        <form id="form1" action="{% url 'schemes:column_create' %}" method="post">
             {% csrf_token %}
 
-            <div class="row my-auto d-flex justify-content-between">
-                <h2 class="font-weight-bold pt-2 col-md-4">New schema</h2>
-                <button type="submit" value="сохранить" class="btn btn-primary col-md-1 btn-round">сохранить
-                </button>
-            </div>
+            <div class="row">
+                <div class="row my-auto d-flex justify-content-between">
 
-            {{ form.as_p }}
-            <table class="table">
-                {{ schemachilds.management_form }}
-                {% for form in schemachilds.forms %}
-                    {% if forloop.first %}
-                        <thead>
-                        <tr>
+                    <h2 class="font-weight-bold pt-2 col-md-4">New schema</h2>
+                    {#                    <a class="btn btn-success h3 col-md-2 offset-md-2"#}
+                    {#                       href="{% url 'schemes:column_create' %}">Submit</a>#}
+                    <button type="submit" form="form1" value="сохранить" class="btn btn-primary offset col-lg-2">
+                        сохранить
+                    </button>
+
+                </div>
+            </div>
+            <div class="row spacer">
+                <div class="col-md-4 mb-3">
+                    <label>{{ schema_form.title.label }}</label>
+                    {{ schema_form.title }}
+                </div>
+
+            </div>
+            <h2 class="font-weight-bold pt-2 col-md-4">Schema columns</h2>
+
+            <div class="row form-row spacer">
+                <table class="table">
+                    {{ formset.management_form }}
+                    {% for form in formset %}
+                        {% if forloop.first %}
+                            <thead>
+                            <tr>
+                                {% for field in form.visible_fields %}
+                                    <th class="{% cycle 'td1' 'td2' 'td3' %} order formset_td">
+                                        {{ field.label|capfirst }}
+                                    </th>
+                                {% endfor %}
+                            </tr>
+                            </thead>
+                        {% endif %}
+                        <tr class="formset_row ">
                             {% for field in form.visible_fields %}
-                                <th class="{% cycle 'td1' 'td2' 'td3' %} order formset_td">
-                                    {{ field.label|capfirst }}
-                                </th>
+                                <td class="{% cycle 'td1' 'td2' 'td3' %} order formset_td">
+                                    {% if forloop.first %}
+                                        {% for hidden in form.hidden_fields %}
+                                            {{ hidden }}
+                                        {% endfor %}
+                                    {% endif %}
+                                    {{ field.errors.as_ul }}
+                                    {{ field }}
+                                </td>
                             {% endfor %}
                         </tr>
-                        </thead>
-                    {% endif %}
-                    <tr class="formset_row">
+                    {% endfor %}
+                </table>
+            </div>
 
-                        {% for field in form.visible_fields %}
-                            <td class="{% cycle 'td1' 'td2' 'td3' %} order formset_td">
-                                {% if forloop.first %}
-                                    {% for hidden in form.hidden_fields %}
-                                        {{ hidden }}
-                                    {% endfor %}
-                                {% endif %}
-                                {{ field.errors.as_ul }}
-                                {{ field }}
-                            </td>
-                        {% endfor %}
-                    </tr>
-                {% endfor %}
-            </table>
-
-            <a class="btn btn-warning btn-round form-control last"
-               href="{% url 'users:profile' %}">Return</a>
-
+            <button class="btn btn-outline-primary add-form-row">Add column</button>
+            <div class="col text-center">
+                <a class="btn btn-outline-secondary col-md-2" role="button" href="{% url 'users:profile' %}">Return</a>
+            </div>
         </form>
     </div>
 
 {% endblock %}
+
+{% block custom_js %}
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"
+            integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN"
+            crossorigin="anonymous"></script>
+    <script type="text/javascript">
+        function updateElementIndex(el, prefix, ndx) {
+            var id_regex = new RegExp('(' + prefix + '-\\d+)');
+            var replacement = prefix + '-' + ndx;
+            if ($(el).attr("for")) $(el).attr("for", $(el).attr("for").replace(id_regex, replacement));
+            if (el.id) el.id = el.id.replace(id_regex, replacement);
+            if (el.name) el.name = el.name.replace(id_regex, replacement);
+        }
+
+        function cloneMore(selector, prefix) {
+            var newElement = $(selector).clone(true);
+            var total = $('#id_' + prefix + '-TOTAL_FORMS').val();
+            newElement.find(':input:not([type=button]):not([type=submit]):not([type=reset])').each(function () {
+                var name = $(this).attr('name')
+                if (name) {
+                    name = name.replace('-' + (total - 1) + '-', '-' + total + '-');
+                    var id = 'id_' + name;
+                    $(this).attr({'name': name, 'id': id}).val('').removeAttr('checked');
+                }
+            });
+            newElement.find('label').each(function () {
+                var forValue = $(this).attr('for');
+                if (forValue) {
+                    forValue = forValue.replace('-' + (total - 1) + '-', '-' + total + '-');
+                    $(this).attr({'for': forValue});
+                }
+            });
+            total++;
+            $('#id_' + prefix + '-TOTAL_FORMS').val(total);
+            $(selector).after(newElement);
+            var conditionRow = $('.form-row:not(:last)');
+            conditionRow.find('.btn.add-form-row')
+                .removeClass('btn-success').addClass('btn-danger')
+                .removeClass('add-form-row').addClass('remove-form-row')
+                .html('-');
+            return false;
+        }
+
+        function deleteForm(prefix, btn) {
+            var total = parseInt($('#id_' + prefix + '-TOTAL_FORMS').val());
+            if (total > 1) {
+                btn.closest('.form-row').remove();
+                var forms = $('.form-row');
+                $('#id_' + prefix + '-TOTAL_FORMS').val(forms.length);
+                for (var i = 0, formCount = forms.length; i < formCount; i++) {
+                    $(forms.get(i)).find(':input').each(function () {
+                        updateElementIndex(this, prefix, i);
+                    });
+                }
+            }
+            return false;
+        }
+
+        $(document).on('click', '.add-form-row', function (e) {
+            e.preventDefault();
+            cloneMore('.form-row:last', 'form');
+            return false;
+        });
+        $(document).on('click', '.remove-form-row', function (e) {
+            e.preventDefault();
+            deleteForm('form', $(this));
+            return false;
+        });
+
+    </script>
+{% endblock %}
+
 
