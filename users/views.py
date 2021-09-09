@@ -1,10 +1,11 @@
-from django.contrib import auth
 from django.contrib.auth.views import LoginView, LogoutView
-from django.http import HttpResponseRedirect, HttpResponse
-from django.shortcuts import render, get_object_or_404
-from users.forms import UserLoginForm  # UserProfileForm, UserForm
-from django.urls import reverse, reverse_lazy
+
+from django.views.generic import ListView
+
+import dataschems.models
+from users.forms import UserLoginForm
 from users.models import BaseUser
+from dataschems.models import ModelSchema
 
 
 # Create your views here.
@@ -19,9 +20,15 @@ class UserLogin(LoginView):
         return context
 
 
-def user_profile(request):
-    return render(request=request, template_name='users/base.html',
-                  context={'user': request.user, })
+class UserProfileView(ListView):
+    template_name = 'users/base.html'
+    model = BaseUser
+
+    def get_context_data(self, *, object_list=None, **kwargs):
+        context = super(UserProfileView, self).get_context_data(**kwargs)
+        context['schemas'] = ModelSchema.objects.filter(creator=self.request.user)
+        return context
+
 
 
 class LogOutUser(LogoutView):

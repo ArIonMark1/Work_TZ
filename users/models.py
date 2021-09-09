@@ -12,14 +12,14 @@ class BaseUser(AbstractUser):
         return f'{self.username}'
 
 
-class Profile(models.Model):
-    user = models.OneToOneField(BaseUser, on_delete=models.CASCADE, null=False, unique=True)
-
-    @receiver(post_save, sender=BaseUser)
-    def create_user_profile(sender, instance, created, **kwargs):
-        if created:
-            Profile.objects.create(user=instance)
-
-    @receiver(post_save, sender=BaseUser)
-    def save_user_profile(sender, instance, **kwargs):
-        instance.profile.save()
+# class Profile(models.Model):
+#     user = models.OneToOneField(BaseUser, on_delete=models.CASCADE, null=False, unique=True)
+#
+#     @receiver(post_save, sender=BaseUser)
+#     def create_user_profile(sender, instance, created, **kwargs):
+#         if created:
+#             Profile.objects.create(user=instance)
+#
+#     @receiver(post_save, sender=BaseUser)
+#     def save_user_profile(sender, instance, **kwargs):
+#         instance.profile.save()

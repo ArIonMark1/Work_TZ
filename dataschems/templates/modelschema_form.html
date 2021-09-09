@@ -1,0 +1,56 @@
+{% extends 'users/base.html' %}
+{% load static %}
+
+
+{% block content %}
+
+    <div class="order_form">
+        <form action="{% url 'schemes:column_create' %}" method="post">
+            {% csrf_token %}
+
+            <div class="row my-auto d-flex justify-content-between">
+                <h2 class="font-weight-bold pt-2 col-md-4">New schema</h2>
+                <button type="submit" value="сохранить" class="btn btn-primary col-md-1 btn-round">сохранить
+                </button>
+            </div>
+
+            {{ form.as_p }}
+            <table class="table">
+                {{ schemachilds.management_form }}
+                {% for form in schemachilds.forms %}
+                    {% if forloop.first %}
+                        <thead>
+                        <tr>
+                            {% for field in form.visible_fields %}
+                                <th class="{% cycle 'td1' 'td2' 'td3' %} order formset_td">
+                                    {{ field.label|capfirst }}
+                                </th>
+                            {% endfor %}
+                        </tr>
+                        </thead>
+                    {% endif %}
+                    <tr class="formset_row">
+
+                        {% for field in form.visible_fields %}
+                            <td class="{% cycle 'td1' 'td2' 'td3' %} order formset_td">
+                                {% if forloop.first %}
+                                    {% for hidden in form.hidden_fields %}
+                                        {{ hidden }}
+                                    {% endfor %}
+                                {% endif %}
+                                {{ field.errors.as_ul }}
+                                {{ field }}
+                            </td>
+                        {% endfor %}
+                    </tr>
+                {% endfor %}
+            </table>
+
+            <a class="btn btn-warning btn-round form-control last"
+               href="{% url 'users:profile' %}">Return</a>
+
+        </form>
+    </div>
+
+{% endblock %}
+

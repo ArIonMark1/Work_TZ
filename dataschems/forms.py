@@ -1,13 +1,12 @@
-
 from django.contrib.auth import forms
 from django import forms
-from dataschems.models import ModelSchema
+from dataschems.models import ModelSchema, Column
 
 
 class ModelSchemaForm(forms.ModelForm):
     class Meta:
         model = ModelSchema
-        fields = '__all__'
+        exclude = 'creator', 'is_active',
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
@@ -15,12 +14,12 @@ class ModelSchemaForm(forms.ModelForm):
             field.widget.attrs['class'] = 'form-control'
 
 
+class ColumnSchemaForm(forms.ModelForm):
+    class Meta:
+        model = Column
+        fields = 'name', 'type', 'quantity',
 
-
-# class ProductAdminUpdateForm(ProductAdminCreationForm):
-#     image = forms.ImageField(widget=forms.FileInput(attrs={
-#         'class': 'custom-file-input'}), required=False)
-#
-#     class Meta:
-#         model = Product
-#         fields = ('name', 'description', 'image', 'price', 'quantity', 'category', 'is_active')
+    def __init__(self, *args, **kwargs):
+        super(ColumnSchemaForm, self).__init__(*args, **kwargs)
+        for field_name, field in self.fields.items():
+            field.widget.attrs['class'] = 'form-control'

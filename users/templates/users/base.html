@@ -33,12 +33,6 @@
                         <a class="btn btn-outline-primary" href="{% url 'users:logout' %}">LogOut</a>
                     </li>
 
-                {% else %}
-
-                    <li class="nav-item">
-                        <a class="btn btn-outline-primary" href="{% url 'users:login' %}">LogIn</a>
-                    </li>
-
                 {% endif %}
 
             </ul>
@@ -46,25 +40,22 @@
     </div>
 </nav>
 
-
-{% block content %}
-    <div class="ml-4 col-sm-8 mt-5 col-lg-8 mx-auto">
+<div class="ml-4 col-sm-8 mt-5 col-lg-8 mx-auto">
+    {% block content %}
 
         <div class="row ">
-
             <div class="row my-auto d-flex justify-content-between">
 
                 <h2 class="font-weight-bold pt-2 col-md-4">Data schemas</h2>
-
                 <a class="btn btn-success h3 col-md-2 offset-md-2"
-                   href="{% url 'schemes:schema_add' %}">New Schema</a>
+                   href="{% url 'schemes:column_create' %}">New Schema</a>
+
             </div>
         </div>
         <br>
-        {% include 'schemas_tables.html' %}
-    </div>
+        {% include 'modelschema_list.html' %}
 
-{% endblock %}
-
+    {% endblock %}
+</div>
 </body>
 </html>

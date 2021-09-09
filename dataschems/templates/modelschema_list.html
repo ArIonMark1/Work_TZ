@@ -1,0 +1,38 @@
+<table class="table table-bordered">
+
+    <thead>
+    <tr>
+        <th scope="col">#</th>
+        <th scope="col">Title</th>
+        <th scope="col">Modified</th>
+        <th scope="col">Actions</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    =========================
+    {% if user %}
+        {{ user.username }}
+    {% endif %}
+    ========================
+
+    {% for item in schemas %}
+        <tr>
+            <th scope="row">{{ item.pk }}</th>
+            <td>
+                <a href="#" class="btn btn-link text-decoration-none">{{ item.title }}</a>
+            </td>
+            <td>
+                {{ item.time_to_update|date:"Y-m-d H:i:s" }}</td>
+            <td>
+                <a href="#" class="btn btn-link text-decoration-none">Edit scheme</a>
+                <a href="#" class="btn btn-link text-decoration-none text-danger">delete</a>
+            </td>
+        </tr>
+
+    {% endfor %}
+
+
+    </tbody>
+</table>
+
