@@ -15,3 +15,8 @@ pip install python-dotenv
 env:
 SOCIAL_AUTH_GOOGLE_OAUTH2_KEY = 673485336361-c7kig3brrljiu3cg3n193ni9a6brbf6i.apps.googleusercontent.com
 SOCIAL_AUTH_GOOGLE_OAUTH2_SECRET = PEC4-ANcGdPXA0Y2OAnQOkqc
+
+pip install celery
+pip install redis
+
+docker run -d -p 6379:6379 redis
